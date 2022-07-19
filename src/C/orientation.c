@@ -41,6 +41,20 @@ const char faces[6*3] = {
 	0,0,-1 // 6
 };
 
+
+// At what index should we look to find respectively
+// TopDown LeftRight FrontBack
+const char TDLRFB[3*8] = {
+	4,3,1, // 0 top left front
+	5,2,0, // 1
+	6,1,3, // 2
+	7,0,2, // 3
+	0,7,5, // 4 bottom
+	1,6,4, // 5
+	2,5,7, // 6
+	3,4,6  // 7
+};
+
 void inplace_dot(char dice[], char R[]) {
 	char out[9];
 	for(char row=0; row<3;row++) {
@@ -140,6 +154,15 @@ void dice_to_port_numbers(char dice[], char ports[]) {
 }
 
 
+// in canonical state
+void port_numbers_to_dice(char dice[], char ports[]) {
+	for(char p=0;p<3;p++)
+		for (char i=0; i<3; i++)
+			dice[3*i+p] = faces[3*ports[p] + i];
+}
+
+
+// should we call this transform_to_position ?
 void transform_from_position(char dice[], char position) {
 	if( !is_on_top(position) )
 		Mirrorz(dice);
@@ -151,11 +174,13 @@ void transform_from_position(char dice[], char position) {
 
 int main(void) {
 	char canonicaldice[9] = {
-		0,0,1,
 		0,1,0,
+		0,0,1,
 		1,0,0
 	};
 	char ports[3];
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
 
 	for( char p=0; p<4;p++) {	
 		printf("%c: ", p+'0');
