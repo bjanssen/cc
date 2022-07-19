@@ -159,10 +159,11 @@ int main(void) {
 
 	for( char p=0; p<8;p++) {	
 		printf("%c: ", p+'0');
+		// TD LR FB
 		char dice[9] = {
-			1,0,0,
 			0,1,0,
-			0,0,1
+			0,0,1,
+			1,0,0
 		};
 		transform_from_position(dice,p);
 		dice_to_port_numbers(dice, ports);
