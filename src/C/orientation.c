@@ -144,9 +144,9 @@ void transform_from_position(char dice[], char position) {
 	if( !is_on_top(position) )
 		Mirrorz(dice);
 	if( !is_on_left(position) )
-	       Mirrory(dice);
+	       Mirrorx(dice);
 	if( is_on_front(position) )
-		Mirrorx(dice);	
+		Mirrory(dice);	
 }
 
 int main(void) {
@@ -157,7 +157,7 @@ int main(void) {
 	};
 	char ports[3];
 
-	for( char p=0; p<8;p++) {	
+	for( char p=0; p<4;p++) {	
 		printf("%c: ", p+'0');
 		// TD LR FB
 		char dice[9] = {
@@ -165,6 +165,20 @@ int main(void) {
 			0,0,1,
 			1,0,0
 		};
+		transform_from_position(dice,p);
+		dice_to_port_numbers(dice, ports);
+		print_ports(ports);
+	}
+	// bottom dices are rotated in example
+	for( char p=4; p<8;p++) {	
+		printf("%c: ", p+'0');
+		// TD LR FB
+		char dice[9] = {
+			0,1,0,
+			0,0,1,
+			1,0,0
+		};
+		RotateRx(dice,2);
 		transform_from_position(dice,p);
 		dice_to_port_numbers(dice, ports);
 		print_ports(ports);
