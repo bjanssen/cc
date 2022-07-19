@@ -172,6 +172,15 @@ void transform_from_position(char dice[], char position) {
 		Mirrory(dice);	
 }
 
+// TODO
+// convert adjacency matrix to list of orientations of each dice
+// store orientation in order, i.e. 0..7
+// not in the order of the code
+// check if TD is correct and check if all are correct
+// randomly permute the standard config, where we can first
+// rotate Rz, but after that only apply 1 Rx or Ry
+// because 6 is not connected.
+
 int main(void) {
 	char canonicaldice[9] = {
 		0,1,0,
