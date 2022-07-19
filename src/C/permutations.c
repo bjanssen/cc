@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#define LEN 10
-#define SZ 10
+#define LEN 8
+#define SZ 8
 
 //Links boven voor A met de klok mee BCD
 //Onder A E en weer met de klok mee FGH
@@ -19,8 +19,14 @@
 
 //indices into incomming stringdata
 // from, port, to, port
-#define CISZ 28
-const char codeidx[CISZ] = {0, 1, 2, 3,
+#define CZX 4
+#define CZY 7
+#define CZ  CZX*CZY
+#define CZL 22
+
+#define DEBUG 1
+
+const char codeidx[CZ] = {0, 1, 2, 3,
 2, 4, 6, 7,
 2, 5, 14, 15,
 6, 8, 10, 11,
@@ -32,15 +38,30 @@ const char ai[8*3] = {
 1,3,4,
 0,2,5,
 1,3,6,
-8,2,7,
-9,5,7,
+0,2,7,
+0,5,7,
 1,4,6,
 2,5,7,
 3,4,6
 };
 
+void print_positions(char v[]) {
+	for (char i=0; i<LEN; i++)
+		printf("%c", v[i] + '0');
+	printf("\n");
+}
+
+void print_code(char code[]) {
+	char i = 0;
+	while(code[i] != '\0') {
+		printf("%c",code[i]);
+		++i;
+	}
+	printf("\n");
+}
 
 void print_matrix(char A[]) {
+	printf("\n");
 	for(int i=0; i<SZ; i++){
 		for(int j=0; j<SZ; j++)
 			printf("%c ", A[SZ*i+j] + '0');
@@ -49,27 +70,15 @@ void print_matrix(char A[]) {
 }
 
 void code_to_adjacency_matrix(char A[], char code[]){
-	char i = 0;
-	while(code[i] != '\0') {
-		printf("%c",code[i]);
-		++i;
-	}
-	printf("\n");
 	for(char i = 0 ; i<SZ*SZ; i++)
 		A[i]=0;
 	char from, fromport, to, toport;
 	for(int j=0; j<3; j++)
 		for(int i=0; i<7; i++) {
-			from = code[j*22 + codeidx[4*i]] - 'A'; 
-			fromport = code[j*22 + codeidx[4*i + 1]] - '0'; 
-			to = code[j*22 + codeidx[4*i + 2]] - 'A'; 
-			toport = code[j*22 + codeidx[4*i + 3]] - '0'; 
-			if(j>0) {
-				if(from==0)
-					from = 7+j;
-				if(to==0)
-					to = 7+j;
-			}
+			from = code[j*CZL + codeidx[CZX*i]] - 'A'; 
+			fromport = code[j*CZL + codeidx[CZX*i + 1]] - '0'; 
+			to = code[j*CZL + codeidx[CZX*i + 2]] - 'A'; 
+			toport = code[j*CZL + codeidx[CZX*i + 3]] - '0'; 
 
 			A[SZ*from + to] = fromport;
 			A[SZ*to + from] = toport;
@@ -80,23 +89,28 @@ void config_to_adjacency_matrix(char A[], char cfg[]) {
 	for(int i=0; i<SZ*SZ; i++)
 		A[i] = 0;
 	for(char i=0; i<LEN; i++){
-		char row = cfg[i];
+		char col = cfg[i];
 		for(char j=0; j<3; j++){
-			char n;
-			if(i>7 || i==0) {
-			if(i==0) n = ai[0];
-			if(i==7) n = ai[1];
-			if(i==8) n = ai[2];
+			char n = ai[3*i+j];
+			char row = cfg[n];
+			// hard-code outports for the master cube
+			// otherwise put unknown port 6
+			char v = 6;
+			if(row==0) {
+				if (i==1)
+					v = 5;
+				else if(i==3)
+					v = 4;
+				else if(i==4)
+					v = 1;
 			} else {
-				n = ai[3*i+j];
+				v = -1;
 			}
-			char col = cfg[n];
-		printf("%c", col + '0');
-			A[10*row + col] = 1;	
-			A[10*col + row] = 1;	
+			A[SZ*row + col] = v;	
 		}
 	}
 }
+
 
 
 void swap (char *x, char *y) {
@@ -112,12 +126,14 @@ bool check_cube(char v[], char a[]){
 	char b[SZ*SZ];
 	config_to_adjacency_matrix(b, v);
 	// and check if it equals a[]
-	for (char i=0; i<LEN; i++)
-		printf("%c", v[i] + '0');
-	printf("\n");
+#if DEBUG > 2
+	print_positions(v);
+#endif
 	bool same = 1;
-	for(char i=0; i<SZ*SZ;i++)	
+	for(char i=0; i<SZ;i++)	
 		same &= (a[i] == b[i]);
+	for(char i=SZ; i<SZ*SZ;i++)	
+		same &= ((a[i]==0) == (b[i]==0));
 
 	return same;
 }
@@ -156,8 +172,8 @@ void adjacency_matrix_to_config(char v[], char A[]) {
 
 
 int main() {
-	char master[LEN] = {0,1,2,4,3,5,6,7,8,9};
-	char currentconfig[LEN] = {0,1,2,3,4,5,6,7,8,9};
+	char master[LEN] = {0,1,2,4,3,5,6,7};
+	char currentconfig[LEN] = {0,1,2,3,4,5,6,7};
 	char A[SZ*SZ];
 
 
@@ -169,12 +185,20 @@ int main() {
 	code_to_adjacency_matrix(A, code);
 	print_matrix(A);
 
-	check_cube(currentconfig, A);
-
 	config_to_adjacency_matrix(A, currentconfig);
 	print_matrix(A);
-	//adjacency_matrix_to_config(master, A);
 
+	adjacency_matrix_to_config(master, A);
+	print_positions(master);
+	
+	printf("Different code\n");
+	char magic[LEN] = {0,7,5,6,3,2,4,1};
+ 	print_positions(magic);	
+	config_to_adjacency_matrix(A, magic);
+	print_matrix(A);
+
+	adjacency_matrix_to_config(magic, A);
+	print_positions(magic);
 	return 0;
 
 }
