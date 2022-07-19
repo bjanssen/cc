@@ -26,24 +26,32 @@
 
 #define DEBUG 1
 
-const char codeidx[CZ] = {0, 1, 2, 3,
+// index into string provided by master cube for each port on the master
+// encodes from, fromport, to, toport for each cube
+const char codeidx[CZ] = {
+0, 1, 2, 3,
 2, 4, 6, 7,
 2, 5, 14, 15,
 6, 8, 10, 11,
 6, 9, 12, 13,
 14, 16, 18, 19,
-14, 17, 20, 21};
+14, 17, 20, 21
+};
 
+// Adjacency index map
+// Map from cube position to its 3 neighbours
 const char ai[8*3] = {
-1,3,4,
-0,2,5,
+1,3,4, // position 0, front left top
+0,2,5, // position 1, back left top
 1,3,6,
 0,2,7,
-0,5,7,
-1,4,6,
+0,5,7, // position 4, front left bottom
+1,4,6, // position 5, back left bottom
 2,5,7,
 3,4,6
 };
+
+
 
 void print_positions(char v[]) {
 	for (char i=0; i<LEN; i++)
