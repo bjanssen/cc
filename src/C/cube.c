@@ -92,7 +92,7 @@ void code_to_state(Cube *state, char code[]){
 }
 		
 
-#ifdef CUBE
+#ifndef CUBE
 
 int main() {
 // A1 E124 F514B1G3 H312D1G5
