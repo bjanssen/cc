@@ -1,30 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#define LEN 8
-#define SZ 8
-
-//Links boven voor A met de klok mee BCD
-//Onder A E en weer met de klok mee FGH
-// bovenste zijde 6 naar boven
-// onderste zijde 6 naar onder
-// zijde 4 naar voren
-// 1 boven, 4 naar voren, dan 2 rechts
-
-
-// A1 E124 F514B1G3 H312D1G5
-// A4 D315 H123G5E4 C213G1B4
-// A5 B214 F145G3E2 C312G1D5
-// A heeft of poort 1 E zitten 
-
-//indices into incomming stringdata
-// from, port, to, port
-#define CZX 4
-#define CZY 7
-#define CZ  CZX*CZY
-#define CZL 22
-
-#define DEBUG 1
+#include "permutation.h"
 
 // index into string provided by master cube for each port on the master
 // encodes from, fromport, to, toport for each cube
@@ -93,6 +67,8 @@ void code_to_adjacency_matrix(char A[], char code[]){
 		}
 }
 
+
+
 void config_to_adjacency_matrix(char A[], char cfg[]) {
 	for(int i=0; i<SZ*SZ; i++)
 		A[i] = 0;
@@ -128,7 +104,8 @@ void swap (char *x, char *y) {
 	*y = temp;
 }
 
-// placeholder
+// Now checks the complete cube
+// In principle the function can return as soon as a single check fails
 bool check_cube(char v[], char a[]){
 	// construct adjacency matrix from v
 	char b[SZ*SZ];
@@ -148,6 +125,8 @@ bool check_cube(char v[], char a[]){
 
 
 // Based on Heap's algorithm - see Wikipedia
+// Can be much more efficient.
+// Now also moves the master node around.
 void adjacency_matrix_to_config(char v[], char A[]) {
 	char c[LEN];
 	for(char i=0; i<LEN; i++)
@@ -177,8 +156,13 @@ void adjacency_matrix_to_config(char v[], char A[]) {
 }
 
 
+void code_to_config(char cfg[], char code[]){
+	char A[SZ*SZ];
+	code_to_adjacency_matrix(A, code);
+	adjacency_matrix_to_config(cfg, A);
+}
 
-
+#ifndef CUBE
 int main() {
 	char master[LEN] = {0,1,2,4,3,5,6,7};
 	char currentconfig[LEN] = {0,1,2,3,4,5,6,7};
@@ -210,3 +194,4 @@ int main() {
 	return 0;
 
 }
+#endif
