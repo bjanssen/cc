@@ -171,8 +171,12 @@ int main(void) {
 	};
 	char ports[3];
 	dice_to_port_numbers(canonicaldice, ports);
+	printf("The matrix representation of the canonically oriented dice in world coordinates as used in the master code looks like:\n");
+	print_dice(canonicaldice);
+	printf("Ports (TopDown, LeftRight, FrontBack) that correspond to this dice in world coordinates are:\n");
 	print_ports(ports);
 
+	printf("\nIf the cube is constructed with the dice above in the bottom plane, and those dice rotated upwards around the x-axis in the top-plane,\nthen these are their respective connected ports.\nPosition: Ports");
 	for( char p=0; p<4;p++) {	
 		printf("%c: ", p+'0');
 		// TD LR FB
@@ -201,7 +205,7 @@ int main(void) {
 		print_ports(ports);
 	}
 	
-
+#if DEBUG > 3
 	print_dice(canonicaldice);
 	printf("\n");
 	RotateRz(canonicaldice,1);
@@ -209,6 +213,7 @@ int main(void) {
 	printf("\n");
 	RotateRz(canonicaldice,3);
 	print_dice(canonicaldice);
+#endif
 
 
 

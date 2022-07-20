@@ -186,25 +186,31 @@ int main() {
 // A4 D315 H123G5E4 C213G1B4
 // A5 B214 F145G3E2 C312G1D5
 	char code[] = "A1E124F514B1G3H312D1G5A4D315H123G5E4C213G1B4A5B214F145G3E2C312G1D5";
+	printf("Code received on Master:\n%s\n", code);
 	
 	code_to_adjacency_matrix(A, code);
+	printf("Adjacency matrix constructed from code:\n");
 	print_matrix(A);
 
 	config_to_adjacency_matrix(A, currentconfig);
+	printf("Position information mapped to adjacency matrix:\n");
 	print_matrix(A);
 
 	adjacency_matrix_to_config(master, A);
+	printf("Cube positions computed from adjacency matrix\n");
 	print_positions(master);
 	
-	printf("Different code\n");
+	printf("Different permutation of cube positions\n");
 	char magic[LEN] = {0,7,5,6,3,2,4,1};
  	print_positions(magic);	
 	config_to_adjacency_matrix(A, magic);
 	print_matrix(A);
 
 	adjacency_matrix_to_config(magic, A);
+	printf("Reconstruction based on adjacency matrix.\n");
 	print_positions(magic);
-
+	
+	// check code_to_config
 	char c[LEN] = {0,0,0,0,0,0,0,0};
 	code_to_config(c, code);
 	print_positions(c);
