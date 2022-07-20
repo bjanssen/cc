@@ -1,5 +1,5 @@
 cube: cube.c orientation.o permutation.o
-	gcc -g -o cube cube.c orientation.o permutation.o
+	gcc -g -o cube cube.c orientation.o permutation.o -DCUBE
 
 orientation: orientation.h orientation.c
 	gcc -g -o orientation orientation.c
