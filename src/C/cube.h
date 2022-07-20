@@ -12,5 +12,5 @@ typedef struct cube Cube;
 char n_correct_orientations(Cube master, Cube state);
 char n_correct_orientation(Cube master, Cube state, char o);
 void code_to_state(Cube *state, char code[]);
-
+Cube generate_random_cube();
 #endif
