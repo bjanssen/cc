@@ -107,6 +107,10 @@ void swap (char *x, char *y) {
 // Now checks the complete cube
 // In principle the function can return as soon as a single check fails
 bool check_cube(char v[], char a[]){
+	// hack to not check invalid codes
+	// master is always at position 0
+	if (v[0] != 0)
+		return false;
 	// construct adjacency matrix from v
 	char b[SZ*SZ];
 	config_to_adjacency_matrix(b, v);
