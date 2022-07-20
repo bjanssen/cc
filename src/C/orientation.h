@@ -2,6 +2,8 @@
 #define orientation_h
 #include <stdbool.h>
 
+void print_ports(char ports[]);
+void print_dice(char dice[]);
 
 void dice_to_port_numbers(char dice[], char ports[]);
 void port_numbers_to_dice(char dice[], char ports[]);

@@ -146,7 +146,7 @@ void dice_to_port_numbers(char dice[], char ports[]) {
 void port_numbers_to_dice(char dice[], char ports[]) {
 	for(char p=0;p<3;p++)
 		for (char i=0; i<3; i++)
-			dice[3*i+p] = faces[3*ports[p] + i];
+			dice[3*i+p] = faces[3*(ports[p]-1) + i];
 }
 
 

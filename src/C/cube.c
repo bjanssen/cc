@@ -76,18 +76,21 @@ void code_to_state(Cube *state, char code[]){
 	for(char i=0; i<LEN; i++) {
 		// transform back to worldcoordinates
 		// based on actual position
+		// at position i the cube labelled p is positioned
 		p = state->pos[i];
 		// read ports from adjacency matrix
 		// based on durrent postion in the cube
+		printf("\n");
 		for(char j=0; j<3; j++){
 			char idx = state->pos[TDLRFB[3*p+j]];
 			v[j] = A[SZ*p + idx];
 			printf("%c", v[j] + '0');
 		}
-		printf("\n");
+		printf("->");
 		port_numbers_to_dice(dice, v);
-		transform_to_position(dice,p);
-		dice_to_port_numbers(dice, &(state->or[3*i]));
+		transform_to_position(dice,i);
+		dice_to_port_numbers(dice, &(state->or[3*p]));
+		print_ports(&(state->or[3*p]));
 	}
 }
 		
@@ -111,6 +114,20 @@ int main() {
 	};
 	Cube state;
 	print_positions(master.pos);
+	print_ports(master.or);
+	char dice[9];
+	port_numbers_to_dice(dice, master.or);
+	print_dice(dice);
+	transform_to_position(dice,0);
+	dice_to_port_numbers(dice, master.or);
+	print_ports(master.or);
+
+	port_numbers_to_dice(dice, master.or);
+	transform_to_position(dice,0);
+	dice_to_port_numbers(dice, master.or);
+	print_ports(master.or);
+	printf("========\n");
+
 
 	//code_to_config(state.pos, code);
 	code_to_state(&state, code);
