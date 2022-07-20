@@ -28,9 +28,9 @@
 #define CZL 22
 
 #define DEBUG 1
-void code_to_config(char cfg[], char code[]);
-void code_to_adjacency_matrix(char A[], char code[]);
-void print_positions(char v[]);
-char n_correct_positions(char master[], char state[]);
+void code_to_config(int8_t cfg[], int8_t code[]);
+void code_to_adjacency_matrix(int8_t A[], int8_t code[]);
+void print_positions(int8_t v[]);
+int8_t n_correct_positions(int8_t master[], int8_t state[]);
 
 #endif

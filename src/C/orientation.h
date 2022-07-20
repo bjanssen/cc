@@ -3,14 +3,14 @@
 #include <stdbool.h>
 #include <stdlib.h> // rand
 
-void print_ports(char ports[]);
-void print_dice(char dice[]);
+void print_ports(int8_t ports[]);
+void print_dice(int8_t dice[]);
 
-void dice_to_port_numbers(char dice[], char ports[]);
-void port_numbers_to_dice(char dice[], char ports[]);
-void transform_to_position(char dice[], char position);
+void dice_to_port_numbers(int8_t dice[], int8_t ports[]);
+void port_numbers_to_dice(int8_t dice[], int8_t ports[]);
+void transform_to_position(int8_t dice[], int8_t position);
 // to and from are their own inverses
 
-void spin(char ports[], char position);
+void spin(int8_t ports[], int8_t position);
 
 #endif
