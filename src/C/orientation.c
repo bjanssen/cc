@@ -163,12 +163,12 @@ void port_numbers_to_dice(char dice[], char ports[]) {
 
 
 // should we call this transform_to_position ?
-void transform_from_position(char dice[], char position) {
-	if( !is_on_top(position) )
+void transform_to_position(char dice[], char position) {
+	if( is_on_top(position) )
 		Mirrorz(dice);
 	if( !is_on_left(position) )
 	       Mirrorx(dice);
-	if( is_on_front(position) )
+	if( !is_on_front(position) )
 		Mirrory(dice);	
 }
 
@@ -178,7 +178,7 @@ void transform_from_position(char dice[], char position) {
 // not in the order of the code
 // check if TD is correct and check if all are correct
 // randomly permute the standard config, where we can first
-// rotate Rz, but after that only apply 1 Rx or Ry
+// rotate Rz, but after that only apply 1 Rx or Ry, depending on postion
 // because 6 is not connected.
 
 int main(void) {
@@ -199,7 +199,9 @@ int main(void) {
 			0,0,1,
 			1,0,0
 		};
-		transform_from_position(dice,p);
+		// top ones are flipped with 6 on top
+		RotateRx(dice,2);
+		transform_to_position(dice,p);
 		dice_to_port_numbers(dice, ports);
 		print_ports(ports);
 	}
@@ -212,8 +214,7 @@ int main(void) {
 			0,0,1,
 			1,0,0
 		};
-		RotateRx(dice,2);
-		transform_from_position(dice,p);
+		transform_to_position(dice,p);
 		dice_to_port_numbers(dice, ports);
 		print_ports(ports);
 	}
