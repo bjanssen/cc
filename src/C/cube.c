@@ -7,8 +7,8 @@ struct cube {
 
 char n_correct_orientations(Cube master, Cube state) {
 	char n = 0;
-	char p;
 	for(char i=0; i<LEN; i++) {
+		char p = 0;
 		// find correspondence between master and state
 		while( master.pos[p] != state.pos[i])
 			p++;
@@ -23,8 +23,8 @@ char n_correct_orientations(Cube master, Cube state) {
 // UD:0 LR:1, FB:2
 char n_correct_orientation(Cube master, Cube state, char o) {
 	char n = 0;
-	char p;
 	for(char i=0; i<LEN; i++) {
+		char p = 0;
 		// find correspondence between master and state
 		while( master.pos[p] != state.pos[i])
 			p++;
