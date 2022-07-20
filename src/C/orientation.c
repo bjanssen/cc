@@ -160,7 +160,36 @@ void transform_to_position(char dice[], char position) {
 		Mirrory(dice);	
 }
 
+void spin(char ports[], char position) {
+	char dice[9];
+	port_numbers_to_dice(dice, ports);
 
+	int r = rand()%4;
+	RotateRz(dice, r);
+
+	r = rand()%3;
+	if( r == 0 ) {
+		// Rx
+// TODO: CHECK IF THIS IS CORRECT
+		if (is_on_top(position) ^ !is_on_front(position)) {
+			RotateRx(dice,1);
+		} else {
+			RotateRx(dice,3);
+		}
+
+	} else if (r == 1) {
+
+		//Ry
+		if (is_on_top(position) ^ !is_on_left(position)) {
+			RotateRy(dice,3);
+		} else {
+			RotateRy(dice,1);
+		}
+	}
+	// no rotation
+
+	dice_to_port_numbers(dice, ports);
+}
 
 #ifndef CUBE
 int main(void) {

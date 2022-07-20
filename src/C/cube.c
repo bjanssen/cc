@@ -90,7 +90,46 @@ void code_to_state(Cube *state, char code[]){
 		dice_to_port_numbers(dice, &(state->or[3*p]));
 	}
 }
-		
+
+// from: https://stackoverflow.com/questions/6127503/shuffle-array-in-c
+void shuffle(char *array, size_t n)
+{
+    if (n > 1) 
+    {
+        size_t i;
+        for (i = 0; i < n - 1; i++) 
+        {
+          size_t j = i + rand() / (RAND_MAX / (n - i) + 1);
+          char t = array[j];
+          array[j] = array[i];
+          array[i] = t;
+        }
+    }
+}
+
+
+
+Cube generate_random_cube(){
+	// This cube can be modified by arbitrarily applying Rz rotations
+	// followed by a position dependent Rx or Ry
+	Cube master = {.pos = {0,1,2,3,4,5,6,7},
+		.or = {6,4,5,
+			6,4,5,
+			6,4,5,
+			6,4,5,
+			1,4,2,
+			1,4,2,
+			1,4,2,
+			1,4,2}
+	};
+	shuffle(&(master.pos[1]), LEN-1); // hacky way to leave 0 untouched
+	// Don't rotate the first dice
+	for(char i=1;i<LEN; i++)
+	       spin( &(master.or[3*i]), i);	
+
+	return master;
+}
+
 
 #ifndef CUBE
 
@@ -111,6 +150,8 @@ int main() {
 			1,4,2}
 	};
 	Cube state;
+	Cube rstate = generate_random_cube(); 
+	print_state(rstate);
 #if DEBUG > 2
 	print_positions(master.pos);
 	print_ports(master.or);

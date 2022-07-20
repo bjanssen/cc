@@ -3,6 +3,7 @@
 
 #include "permutation.h"
 #include "orientation.h"
+#include <stdlib.h> // rand
 
 
 typedef struct cube Cube;
