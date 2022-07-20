@@ -168,6 +168,13 @@ void code_to_config(char cfg[], char code[]){
 	adjacency_matrix_to_config(cfg, A);
 }
 
+char n_correct_positions(char master[], char state[]) {
+	char n=0;
+	for(char i=0; i<LEN; i++)
+		n += (master[i] == state[i]);
+	return n;
+}
+
 #ifndef CUBE
 int main() {
 	char master[LEN] = {0,1,2,4,3,5,6,7};

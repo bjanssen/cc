@@ -26,4 +26,7 @@ int main() {
 
 	code_to_config(state.pos, code);
 	print_positions(state.pos);
+
+	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
+			
 }
