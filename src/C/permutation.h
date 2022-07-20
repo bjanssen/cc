@@ -27,7 +27,6 @@
 #define CZ  CZX*CZY
 #define CZL 22
 
-#define DEBUG 1
 void code_to_config(int8_t cfg[], int8_t code[]);
 void code_to_adjacency_matrix(int8_t A[], int8_t code[]);
 void print_positions(int8_t v[]);

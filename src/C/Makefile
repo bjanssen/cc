@@ -2,7 +2,7 @@ cube: cc.c cube.o orientation.o permutation.o
 	gcc -g -o cube cube.c orientation.o permutation.o
 
 orientation: orientation.h orientation.c
-	gcc -g -o orientation orientation.c
+	gcc -g -o orientation orientation.c -DDEBUG=4
 
 permutation: permutation.c permutation.h
 	gcc -g -o permutation permutation.c

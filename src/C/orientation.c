@@ -236,11 +236,23 @@ int main(void) {
 	
 #if DEBUG > 3
 	print_dice(canonicaldice);
-	printf("\n");
-	RotateRz(canonicaldice,1);
+	printf("\nRx\n");
+	RotateRx(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
 	print_dice(canonicaldice);
-	printf("\n");
-	RotateRz(canonicaldice,3);
+	RotateRx(canonicaldice,3);
+
+	printf("\nRy\n");
+	RotateRy(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRy(canonicaldice,3);
+	printf("\nRz\n");
+	RotateRz(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
 	print_dice(canonicaldice);
 #endif
 
