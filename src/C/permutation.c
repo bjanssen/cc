@@ -129,8 +129,10 @@ bool check_cube(char v[], char a[]){
 // Now also moves the master node around.
 void adjacency_matrix_to_config(char v[], char A[]) {
 	char c[LEN];
-	for(char i=0; i<LEN; i++)
+	for(char i=0; i<LEN; i++) {
+		v[i] = i; // initialize to 0..7
 		c[i] = 0;
+	}
 
 	if (check_cube(v, A))
 		return;
@@ -191,6 +193,11 @@ int main() {
 
 	adjacency_matrix_to_config(magic, A);
 	print_positions(magic);
+
+	char c[LEN] = {0,0,0,0,0,0,0,0};
+	code_to_config(c, code);
+	print_positions(c);
+
 	return 0;
 
 }
