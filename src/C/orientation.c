@@ -42,18 +42,6 @@ const char faces[6*3] = {
 };
 
 
-// At what index should we look to find respectively
-// TopDown LeftRight FrontBack
-const char TDLRFB[3*8] = {
-	4,3,1, // 0 top left front
-	5,2,0, // 1
-	6,1,3, // 2
-	7,0,2, // 3
-	0,7,5, // 4 bottom
-	1,6,4, // 5
-	2,5,7, // 6
-	3,4,6  // 7
-};
 
 void inplace_dot(char dice[], char R[]) {
 	char out[9];
@@ -171,8 +159,8 @@ void transform_to_position(char dice[], char position) {
 	if( !is_on_front(position) )
 		Mirrory(dice);	
 }
-// to and from are their own inverses
-#define transform_from_postion transform_to_position
+
+
 
 // TODO
 // convert adjacency matrix to list of orientations of each dice

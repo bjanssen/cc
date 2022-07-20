@@ -29,6 +29,7 @@
 
 #define DEBUG 1
 void code_to_config(char cfg[], char code[]);
+void code_to_adjacency_matrix(char A[], char code[]);
 void print_positions(char v[]);
 char n_correct_positions(char master[], char state[]);
 

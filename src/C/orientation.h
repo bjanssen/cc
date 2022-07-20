@@ -3,7 +3,9 @@
 #include <stdbool.h>
 
 
-bool is_on_top(char id);
-bool is_on_front(char id);
-bool is_on_left(char id);
+void dice_to_port_numbers(char dice[], char ports[]);
+void port_numbers_to_dice(char dice[], char ports[]);
+void transform_to_position(char dice[], char position);
+// to and from are their own inverses
+
 #endif
