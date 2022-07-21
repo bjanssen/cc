@@ -10,8 +10,10 @@ int8_t n_correct_orientations(Cube master, Cube state) {
 	for(int8_t i=0; i<LEN; i++) {
 		int8_t p = 0;
 		// find correspondence between master and state
-		while( master.pos[p] != state.pos[i])
-			p++;
+		// not needed. orientations are always stored in order
+		//while( master.pos[p] != state.pos[i])
+		//	p++;
+		p = i;
 		bool same = true;
 		for(int8_t j=0; j<3; j++)
 			same &= (master.or[3*p+j] == state.or[3*i+j]);
@@ -26,8 +28,10 @@ int8_t n_correct_orientation_zyx(Cube master, Cube state, int8_t o) {
 	for(int8_t i=0; i<LEN; i++) {
 		int8_t p = 0;
 		// find correspondence between master and state
-		while( master.pos[p] != state.pos[i])
-			p++;
+		// not needed. orientations are always stored in order
+		//while( master.pos[p] != state.pos[i])
+		//	p++;
+		p = i;
 		bool same = true;
 		same &= (master.or[3*p+o] == state.or[3*i+o]);
 		n += same;
