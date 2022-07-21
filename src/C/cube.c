@@ -21,7 +21,7 @@ int8_t n_correct_orientations(Cube master, Cube state) {
 }
 
 // UD:0 LR:1, FB:2
-int8_t n_correct_orientation(Cube master, Cube state, int8_t o) {
+int8_t n_correct_orientation_zyx(Cube master, Cube state, int8_t o) {
 	int8_t n = 0;
 	for(int8_t i=0; i<LEN; i++) {
 		int8_t p = 0;
