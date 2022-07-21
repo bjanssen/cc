@@ -152,8 +152,14 @@ int main() {
 	};
 	Cube state;
 	printf("Random state, CHECK!\n");
-	Cube rstate = generate_random_cube(); 
-	print_state(rstate);
+	for(int8_t i=0;i<5;i++){ 
+		Cube rstate = generate_random_cube(); 
+		print_state(rstate);
+	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, rstate.pos) + '0');
+	printf("Number of correct orientations: %c\n", n_correct_orientations(master, rstate) + '0');
+	printf("========\n");
+	}
+
 #if DEBUG > 2
 	print_positions(master.pos);
 	print_ports(master.or);
