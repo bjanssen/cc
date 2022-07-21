@@ -9,7 +9,7 @@ permutation: permutation.c permutation.h
 
 
 orientation.o: orientation.h orientation.c
-	gcc -g -c orientation.c -DCUBE
+	gcc -g -c orientation.c -DCUBE -DDEBUG=4
 
 permutation.o: permutation.c permutation.h
 	gcc -g -c permutation.c -DCUBE

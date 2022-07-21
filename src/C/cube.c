@@ -113,7 +113,8 @@ Cube generate_random_cube(){
 	// This cube can be modified by arbitrarily applying Rz rotations
 	// followed by a position dependent Rx or Ry
 	Cube master = {.pos = {0,1,2,3,4,5,6,7},
-		.or = {6,4,5,
+		.or = {
+			6,4,5,
 			6,4,5,
 			6,4,5,
 			6,4,5,

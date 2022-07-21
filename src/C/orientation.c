@@ -160,6 +160,22 @@ void transform_to_position(int8_t dice[], int8_t position) {
 		Mirrory(dice);	
 }
 
+bool check_dice(int8_t dice[], int8_t position) {
+	int8_t ports[3];
+	transform_to_position(dice, position);
+	dice_to_port_numbers(dice, ports);
+	bool contains_six = false;
+	for(int8_t i=0; i<3; i++)
+		contains_six |= (ports[i] == 6);
+	if( contains_six ) {
+		printf("Transformed position should not contain a 6\n");
+		print_ports(ports);
+	}
+	// transform back
+	transform_to_position(dice, position);
+	return !contains_six;
+}
+
 void spin(int8_t ports[], int8_t position) {
 	int8_t dice[9];
 	port_numbers_to_dice(dice, ports);
@@ -168,10 +184,32 @@ void spin(int8_t ports[], int8_t position) {
 	RotateRz(dice, r);
 
 	r = rand()%3;
+#if DEBUG > 3
+	printf("\n==========\n");
+	RotateRx(dice,1);
+	printf("%d:%d%d%d  Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+	RotateRx(dice,2);
+	printf("%d:%d%d%d -Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+	RotateRx(dice,1);
+	RotateRy(dice,1);
+	printf("%d:%d%d%d  Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+	RotateRy(dice,2);
+	printf("%d:%d%d%d -Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+	RotateRy(dice,1);
+	printf("==========\n");
+#endif
+
+	r = 1;
 	if( r == 0 ) {
 		// Rx
-// TODO: CHECK IF THIS IS CORRECT
-		if (is_on_top(position) ^ !is_on_front(position)) {
+		// Probably some bug in the ordering
+		// FB and LR are swapped
+		// So hacky way of doing correct rotation
+		bool doRx = false;
+		int8_t positive[2] = {6,7}; // Weird config
+		for (int8_t i=0; i<2; i++)
+			doRx |= (position == positive[i]);
+		if (doRx) {
 			RotateRx(dice,1);
 		} else {
 			RotateRx(dice,3);
@@ -179,14 +217,21 @@ void spin(int8_t ports[], int8_t position) {
 
 	} else if (r == 1) {
 
-		//Ry
-		if (is_on_top(position) ^ !is_on_left(position)) {
-			RotateRy(dice,3);
-		} else {
+		// Ry
+		bool doRy = false;
+		int8_t positive[2] = {2,4}; // Weird config
+		for (int8_t i=0; i<2; i++)
+			doRy |= (position == positive[i]);
+		if (doRy) {
 			RotateRy(dice,1);
+		} else {
+			RotateRy(dice,3);
 		}
 	}
 	// no rotation
+#if DEBUG > 0
+	check_dice(dice, position);
+#endif
 
 	dice_to_port_numbers(dice, ports);
 }
