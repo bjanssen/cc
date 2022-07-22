@@ -126,7 +126,9 @@ Cube generate_random_cube(){
 	};
 	shuffle(&(master.pos[1]), LEN-1); // hacky way to leave 0 untouched
 	// Don't rotate the first dice
+#if DEBUG > 2
 	print_state(master);
+#endif
 	for(int8_t i=1;i<LEN; i++) {
 		int8_t p = master.pos[i];
 		spin( &(master.orientation[3*p]), i);	
