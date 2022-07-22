@@ -114,10 +114,11 @@ Cube generate_random_cube(){
 	// followed by a position dependent Rx or Ry
 	Cube master = {.pos = {0,1,2,3,4,5,6,7},
 		.or = {
-			6,4,5,
-			6,4,5,
-			6,4,5,
-			6,4,5,
+			6,4,5,// pre-rotate 0 to fixed position
+			//1,4,2,
+			1,4,2,
+			1,4,2,
+			1,4,2,
 			1,4,2,
 			1,4,2,
 			1,4,2,
@@ -125,8 +126,11 @@ Cube generate_random_cube(){
 	};
 	shuffle(&(master.pos[1]), LEN-1); // hacky way to leave 0 untouched
 	// Don't rotate the first dice
-	for(int8_t i=1;i<LEN; i++)
-	       spin( &(master.or[3*i]), i);	
+	print_state(master);
+	for(int8_t i=1;i<LEN; i++) {
+		int8_t p = master.pos[i];
+		spin( &(master.or[3*p]), i);	
+	}
 
 	return master;
 }

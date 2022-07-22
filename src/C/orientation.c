@@ -179,7 +179,7 @@ bool check_dice(int8_t dice[], int8_t position) {
 }
 
 // Brute force version because of representation bug
-void spin(int8_t ports[], int8_t position) {
+void spin_bruteforce(int8_t ports[], int8_t position) {
 	int8_t dice[9];
 	port_numbers_to_dice(dice, ports);
 
@@ -207,36 +207,59 @@ void spin(int8_t ports[], int8_t position) {
 	dice_to_port_numbers(dice, ports);
 }
 
-/*
-void spin_fixme(int8_t ports[], int8_t position) {
+
+bool check_ports(int8_t ports[], int8_t ref[]) {
+	bool correct = true;
+	for (int8_t i = 0; i<3; i++)
+		correct &= (ports[i] == ref[i]);
+	return correct;
+}
+
+
+void spin(int8_t ports[], int8_t position) {
 	int8_t dice[9];
 	port_numbers_to_dice(dice, ports);
+	
+	int8_t ref[] = {1,4,2};
+	if(!check_ports(ports, ref)){
+		printf("ERROR: input port for position %d not id: ", position);
+		print_ports(ports);
+	}
 
-	int r = rand()%4;
-	RotateRz(dice, 1);
 
-	r = rand()%3;
-#if DEBUG > 3
-	printf("\n==========\n");
-	RotateRx(dice,1);
-	printf("%d:%d%d%d  Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRx(dice,2);
-	printf("%d:%d%d%d -Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRx(dice,1);
+	// move to default position
+	if( is_on_top(position) )
+		RotateRx(dice, 2);
 
-	RotateRy(dice,1);
-	printf("%d:%d%d%d  Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRy(dice,2);
-	printf("%d:%d%d%d -Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRy(dice,1);
-
-	RotateRz(dice,1);
-	printf("%d:%d%d%d  Rz %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRz(dice,2);
-	printf("%d:%d%d%d -Rz %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
-	RotateRz(dice,1);
-	printf("==========\n");
+	int r = rand()%3;
+#if DEBUG > 4
+	if( is_on_top(position) ^ !is_on_left(position) ) {
+		// Rx
+		RotateRx(dice,1);
+		printf("%d:%d%d%d  Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+		RotateRx(dice,3);
+	} else {
+		// -Rx
+		RotateRx(dice,3);
+		printf("%d:%d%d%d -Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+		RotateRx(dice,1);
+	}
 #endif
+
+#if DEBUG > 4
+	if( !is_on_top(position) ) {
+		// Ry
+		RotateRy(dice,1);
+		printf("%d:%d%d%d  Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+		RotateRy(dice,3);
+	} else {
+		// -Ry
+		RotateRy(dice,3);
+		printf("%d:%d%d%d -Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
+		RotateRy(dice,1);
+	}
+#endif
+
 
 	r = 2;
 	if( r == 0 ) {
@@ -244,37 +267,36 @@ void spin_fixme(int8_t ports[], int8_t position) {
 		// Probably some bug in the ordering
 		// FB and LR are swapped
 		// So hacky way of doing correct rotation
-		bool doRx = false;
-		int8_t positive[2] = {6,7}; // Weird config
-		for (int8_t i=0; i<2; i++)
-			doRx |= (position == positive[i]);
-		if (doRx) {
+		if( is_on_top(position) ^ !is_on_left(position) ) {
+			// Rx
 			RotateRx(dice,1);
 		} else {
+			// -Rx
 			RotateRx(dice,3);
 		}
 
 	} else if (r == 1) {
-
 		// Ry
-		bool doRy = false;
-		int8_t positive[3] = {1,2,3}; // Weird config
-		for (int8_t i=0; i<3; i++)
-			doRy |= (position == positive[i]);
-		if (doRy) {
+		if( !is_on_top(position) ) {
+			// Ry
 			RotateRy(dice,1);
 		} else {
+			// -Ry
 			RotateRy(dice,3);
 		}
 	}
-	// no rotation
+	// no additional rotation
+	
+	// spin around 1-6 axis
+	r = rand()%4;
+	RotateRz(dice, r);
 #if DEBUG > 0
 	check_dice(dice, position);
 #endif
 
 	dice_to_port_numbers(dice, ports);
 }
-*/
+
 
 #ifndef CUBE
 int main(void) {
@@ -327,6 +349,7 @@ int main(void) {
 	print_ports(ports);
 	print_dice(canonicaldice);
 	RotateRx(canonicaldice,3);
+	print_dice(canonicaldice);
 
 	printf("\nRy\n");
 	RotateRy(canonicaldice,1);
@@ -334,11 +357,64 @@ int main(void) {
 	print_ports(ports);
 	print_dice(canonicaldice);
 	RotateRy(canonicaldice,3);
+	print_dice(canonicaldice);
+
 	printf("\nRz\n");
 	RotateRz(canonicaldice,1);
 	dice_to_port_numbers(canonicaldice, ports);
 	print_ports(ports);
 	print_dice(canonicaldice);
+	RotateRz(canonicaldice,3);
+	print_dice(canonicaldice);
+
+	printf("----\n");
+	print_dice(canonicaldice);
+	printf("\nRxRz");
+	RotateRz(canonicaldice,1);
+	RotateRx(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRx(canonicaldice,3);
+	RotateRz(canonicaldice,3);
+
+	printf("\nRyRz\n");
+	RotateRz(canonicaldice,1);
+	RotateRy(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRy(canonicaldice,3);
+	RotateRz(canonicaldice,3);
+
+	printf("\nRzRz\n");
+	RotateRz(canonicaldice,1);
+	RotateRz(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRz(canonicaldice,2);
+
+	printf("----\n");
+	print_dice(canonicaldice);
+	printf("\nRzRxRx");
+	RotateRx(canonicaldice,2);
+	RotateRz(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRz(canonicaldice,3);
+	RotateRx(canonicaldice,2);
+
+	printf("\nRyRxRx\n");
+	RotateRx(canonicaldice,2);
+	RotateRy(canonicaldice,1);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	RotateRy(canonicaldice,3);
+	RotateRx(canonicaldice,2);
+
 #endif
 
 

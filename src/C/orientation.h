@@ -11,6 +11,7 @@ void port_numbers_to_dice(int8_t dice[], int8_t ports[]);
 void transform_to_position(int8_t dice[], int8_t position);
 // to and from are their own inverses
 
+void spin_bruteforce(int8_t ports[], int8_t position);
 void spin(int8_t ports[], int8_t position);
 
 #endif
