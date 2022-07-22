@@ -2,6 +2,11 @@
 #include "orientation.h"
 #include <stdio.h>
 
+struct cube {
+	int8_t pos[LEN];
+	int8_t or[3*LEN]; // TD LR FB
+};
+
 int main() {
 // A1 E124 F514B1G3 H312D1G5
 // A4 D315 H123G5E4 C213G1B4

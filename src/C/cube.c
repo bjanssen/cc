@@ -21,7 +21,7 @@ int8_t n_correct_orientations(Cube master, Cube state) {
 }
 
 // UD:0 LR:1, FB:2
-int8_t n_correct_orientation_zyx(Cube master, Cube state, int8_t o) {
+int8_t n_correct_orientation_zxy(Cube master, Cube state, int8_t o) {
 	int8_t n = 0;
 	for(int8_t i=0; i<LEN; i++) {
 		int8_t p = 0;
@@ -136,61 +136,3 @@ Cube generate_random_cube(){
 }
 
 
-#ifndef CUBE
-
-int main() {
-// A1 E124 F514B1G3 H312D1G5
-// A4 D315 H123G5E4 C213G1B4
-// A5 B214 F145G3E2 C312G1D5
-	int8_t code[] = "A1E124F514B1G3H312D1G5A4D315H123G5E4C213G1B4A5B214F145G3E2C312G1D5";
-	printf("Code received by on master:\n%s\n\n", code);
-	Cube master = {.pos = {0,1,2,3,4,5,6,7},
-		.or = {6,4,5,
-			6,4,5,
-			6,4,5,
-			6,4,5,
-			1,4,2,
-			1,4,2,
-			1,4,2,
-			1,4,2}
-	};
-	Cube state;
-	printf("Random state, CHECK!\n");
-	for(int8_t i=0;i<5;i++){ 
-		Cube rstate = generate_random_cube(); 
-		print_state(rstate);
-	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, rstate.pos) + '0');
-	printf("Number of correct orientations: %c\n", n_correct_orientations(master, rstate) + '0');
-	printf("========\n");
-	}
-
-#if DEBUG > 2
-	print_positions(master.pos);
-	print_ports(master.or);
-	int8_t dice[9];
-	port_numbers_to_dice(dice, master.or);
-	print_dice(dice);
-	transform_to_position(dice,0);
-	dice_to_port_numbers(dice, master.or);
-	print_ports(master.or);
-
-	port_numbers_to_dice(dice, master.or);
-	transform_to_position(dice,0);
-	dice_to_port_numbers(dice, master.or);
-	print_ports(master.or);
-	printf("========\n");
-#endif
-
-	//code_to_config(state.pos, code);
-	code_to_state(&state, code);
-
-	printf("--State of master code--\n");
-	print_state(master);
-	printf("--State based on example string---\n");
-	print_state(state);
-	printf("-----\n");
-	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
-	printf("Number of correct orientations: %c\n", n_correct_orientations(master, state) + '0');
-			
-}
-#endif
