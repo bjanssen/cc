@@ -2,7 +2,7 @@
 
 struct cube {
 	int8_t pos[LEN];
-	int8_t or[3*LEN]; // TD LR FB
+	int8_t orientation[3*LEN]; // TD LR FB
 };
 
 int8_t n_correct_orientations(Cube master, Cube state) {
@@ -14,7 +14,7 @@ int8_t n_correct_orientations(Cube master, Cube state) {
 			p++;
 		bool same = true;
 		for(int8_t j=0; j<3; j++)
-			same &= (master.or[3*p+j] == state.or[3*i+j]);
+			same &= (master.orientation[3*p+j] == state.orientation[3*i+j]);
 		n += same;
 	}
 	return n;
@@ -29,7 +29,7 @@ int8_t n_correct_orientation_zxy(Cube master, Cube state, int8_t o) {
 		while( master.pos[p] != state.pos[i])
 			p++;
 		bool same = true;
-		same &= (master.or[3*p+o] == state.or[3*i+o]);
+		same &= (master.orientation[3*p+o] == state.orientation[3*i+o]);
 		n += same;
 	}
 	return n;
@@ -41,13 +41,13 @@ void print_state(Cube state) {
 		printf("%c", state.pos[i] + '0');
 	printf("\nUD : ");
 	for(int8_t i=0; i<LEN; i++)
-		printf("%c", state.or[3*i] + '0');
+		printf("%c", state.orientation[3*i] + '0');
 	printf("\nLR : ");
 	for(int8_t i=0; i<LEN; i++)
-		printf("%c", state.or[3*i+1] + '0');
+		printf("%c", state.orientation[3*i+1] + '0');
 	printf("\nFB : ");
 	for(int8_t i=0; i<LEN; i++)
-		printf("%c", state.or[3*i+2] + '0');
+		printf("%c", state.orientation[3*i+2] + '0');
 	printf("\n");
 }
 
@@ -87,7 +87,7 @@ void code_to_state(Cube *state, int8_t code[]){
 		}
 		port_numbers_to_dice(dice, v);
 		transform_to_position(dice,i);
-		dice_to_port_numbers(dice, &(state->or[3*p]));
+		dice_to_port_numbers(dice, &(state->orientation[3*p]));
 	}
 }
 
@@ -113,7 +113,7 @@ Cube generate_random_cube(){
 	// This cube can be modified by arbitrarily applying Rz rotations
 	// followed by a position dependent Rx or Ry
 	Cube master = {.pos = {0,1,2,3,4,5,6,7},
-		.or = {
+		.orientation = {
 			6,4,5,// pre-rotate 0 to fixed position
 			//1,4,2,
 			1,4,2,
@@ -129,7 +129,7 @@ Cube generate_random_cube(){
 	print_state(master);
 	for(int8_t i=1;i<LEN; i++) {
 		int8_t p = master.pos[i];
-		spin( &(master.or[3*p]), i);	
+		spin( &(master.orientation[3*p]), i);	
 	}
 
 	return master;
