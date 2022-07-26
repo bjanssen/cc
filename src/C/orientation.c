@@ -261,7 +261,6 @@ void spin(int8_t ports[], int8_t position) {
 #endif
 
 
-	r = 2;
 	if( r == 0 ) {
 		// Rx
 		// Probably some bug in the ordering
