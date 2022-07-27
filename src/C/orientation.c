@@ -215,17 +215,26 @@ bool check_ports(int8_t ports[], int8_t ref[]) {
 	return correct;
 }
 
+void reset_ports(int8_t ports[]) {
+	ports[0]=1;
+	ports[1]=4;
+	ports[2]=2;
+}
+	
 
 void spin(int8_t ports[], int8_t position) {
 	int8_t dice[9];
+
+	reset_ports(ports);
 	port_numbers_to_dice(dice, ports);
 	
+	/*
 	int8_t ref[] = {1,4,2};
 	if(!check_ports(ports, ref)){
 		printf("ERROR: input port for position %d not id: ", position);
 		print_ports(ports);
 	}
-
+	*/
 
 	// move to default position
 	if( is_on_top(position) )

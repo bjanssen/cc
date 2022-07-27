@@ -51,6 +51,22 @@ void print_state(Cube state) {
 	printf("\n");
 }
 
+void print_reordered_state(Cube state) {
+	printf("pos: ");
+	for(int8_t i=0; i<LEN; i++)
+		printf("%c", state.pos[i] + 'A');
+	printf("\nUD : ");
+	for(int8_t i=0; i<LEN; i++)
+		printf("%c", state.orientation[3*state.pos[i]] + '0');
+	printf("\nLR : ");
+	for(int8_t i=0; i<LEN; i++)
+		printf("%c", state.orientation[3*state.pos[i]+1] + '0');
+	printf("\nFB : ");
+	for(int8_t i=0; i<LEN; i++)
+		printf("%c", state.orientation[3*state.pos[i]+2] + '0');
+	printf("\n");
+}
+
 // At what index should we look to find respectively
 // TopDown LeftRight FrontBack
 const int8_t TDLRFB[3*8] = {
@@ -108,6 +124,14 @@ void shuffle(int8_t *array, size_t n)
 }
 
 
+void spin_all(Cube *state) {
+
+	for(int8_t i=1;i<LEN; i++) {
+		int8_t p = state->pos[i];
+		spin( &(state->orientation[3*p]), i);	
+	}
+}
+
 
 Cube generate_random_cube(){
 	// This cube can be modified by arbitrarily applying Rz rotations
@@ -129,10 +153,7 @@ Cube generate_random_cube(){
 #if DEBUG > 2
 	print_state(master);
 #endif
-	for(int8_t i=1;i<LEN; i++) {
-		int8_t p = master.pos[i];
-		spin( &(master.orientation[3*p]), i);	
-	}
+	spin_all(&master);
 
 	return master;
 }

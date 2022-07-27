@@ -58,4 +58,13 @@ int main() {
 	printf("-----\n");
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
+
+	spin_all(&random_state);
+	printf("\n--Modified orientation---\n");
+	print_state(random_state);
+	printf("\n--Same printed with print_reoredered_state() ---\n");
+	print_reordered_state(random_state);
+	printf("-----\n");
+	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
+	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
 }
