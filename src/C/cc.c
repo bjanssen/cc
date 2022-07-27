@@ -67,4 +67,10 @@ int main() {
 	printf("-----\n");
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
+
+	master = generate_random_cube();
+	printf("\n-- New random master ---\n");
+	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
+	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
+	print_state(master);
 }
