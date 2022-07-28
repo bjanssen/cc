@@ -87,6 +87,9 @@ void code_to_state(Cube *state, int8_t code[]){
 	int8_t v[3];
 	code_to_config(state->pos, code);
 	code_to_adjacency_matrix(A, code);
+#if DEBUG > 3
+	print_matrix(A);
+#endif
 
 	
 	for(int8_t i=0; i<LEN; i++) {
@@ -95,12 +98,13 @@ void code_to_state(Cube *state, int8_t code[]){
 		// at position i the cube labelled p is positioned
 		p = state->pos[i];
 		// read ports from adjacency matrix
-		// based on durrent postion in the cube
+		// based on current postion in the cube
 		for(int8_t j=0; j<3; j++){
-			int8_t idx = state->pos[TDLRFB[3*p+j]];
+			int8_t idx = state->pos[TDLRFB[3*i+j]];
 			v[j] = A[SZ*p + idx];
-			//printf("%c", v[j] + '0');
+			//printf("%c %c->%c",p+'0', idx+'0',  v[j] + '0');
 		}
+		//printf("\n");
 		port_numbers_to_dice(dice, v);
 		transform_to_position(dice,i);
 		dice_to_port_numbers(dice, &(state->orientation[3*p]));

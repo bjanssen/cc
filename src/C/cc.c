@@ -12,6 +12,8 @@ int main() {
 // A4 D315 H123G5E4 C213G1B4
 // A5 B214 F145G3E2 C312G1D5
 	int8_t code[] = "A1E124F514B1G3H312D1G5A4D315H123G5E4C213G1B4A5B214F145G3E2C312G1D5";
+	int8_t altcode[] = "A1C214D123B3G1H412F4G2A4B123E123F1G4D213C1G1A5F514E213B2G4H124G2C4";
+
 	printf("Code received by on master:\n%s\n\n", code);
 	Cube master = {.pos = {0,1,2,3,4,5,6,7},
 		.orientation = {6,4,5,
@@ -52,6 +54,14 @@ int main() {
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, state) + '0');
 			
+	code_to_state(&state, altcode);
+	printf("Code received by on master:\n%s\n\n", altcode);
+	printf("--State based new example string---\n");
+	print_state(state);
+	printf("-----\n");
+	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
+	printf("Number of correct orientations: %c\n", n_correct_orientations(master, state) + '0');
+
 	Cube random_state = generate_random_cube();
 	printf("\n--Random state---\n");
 	print_state(random_state);
