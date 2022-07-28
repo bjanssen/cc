@@ -12,7 +12,8 @@ int main() {
 // A4 D315 H123G5E4 C213G1B4
 // A5 B214 F145G3E2 C312G1D5
 	int8_t code[] = "A1E124F514B1G3H312D1G5A4D315H123G5E4C213G1B4A5B214F145G3E2C312G1D5";
-	int8_t altcode[] = "A1C214D123B3G1H412F4G2A4B123E123F1G4D213C1G1A5F514E213B2G4H124G2C4";
+	//int8_t altcode[] = "A1C214D123B3G1H412F4G2A4B123E123F1G4D213C1G1A5F514E213B2G4H124G2C4";
+	int8_t altcode[] = "A4B123E123F1G4D231G1C1A5F541H142C4G2E231G4B2A1C241H421G2F4D123B3G1";
 
 	printf("Code received by on master:\n%s\n\n", code);
 	Cube master = {.pos = {0,1,2,3,4,5,6,7},
@@ -57,11 +58,14 @@ int main() {
 	code_to_state(&state, altcode);
 	printf("Code received by on master:\n%s\n\n", altcode);
 	printf("--State based new example string---\n");
-	print_state(state);
+	print_reordered_state(state);
 	printf("-----\n");
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, state) + '0');
+	printf("Manual reference\n");
+  printf("AFEBCHGDFB\n 63442142UD\n 41561256FB\n 52624363LR\n 10111000\n");
 
+#if DEBUG > 2
 	Cube random_state = generate_random_cube();
 	printf("\n--Random state---\n");
 	print_state(random_state);
@@ -83,4 +87,5 @@ int main() {
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
 	print_state(master);
+#endif
 }

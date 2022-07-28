@@ -160,6 +160,16 @@ void transform_to_position(int8_t dice[], int8_t position) {
 		Mirrory(dice);	
 }
 
+
+void transform_ports(int8_t ports[], int8_t position) {
+	if( is_on_top(position) )
+		ports[0] = 7 - ports[0];
+	if( !is_on_left(position) )
+		ports[1] = 7 - ports[1];
+	if( !is_on_front(position) )
+		ports[2] = 7 - ports[2];
+}
+
 bool check_dice(int8_t dice[], int8_t position) {
 	int8_t ports[3];
 	transform_to_position(dice, position);
@@ -348,8 +358,19 @@ int main(void) {
 		dice_to_port_numbers(dice, ports);
 		print_ports(ports);
 	}
+
+	print_dice(canonicaldice);
+	printf("\nMz\n");
+	Mirrorz(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	Mirrorz(canonicaldice);
+	print_dice(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
 	
-#if DEBUG > 3
+#if DEBUG > 4
 	print_dice(canonicaldice);
 	printf("\nRx\n");
 	RotateRx(canonicaldice,1);
