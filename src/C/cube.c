@@ -132,7 +132,7 @@ void spin_all(Cube *state) {
 
 	for(int8_t i=1;i<LEN; i++) {
 		int8_t p = state->pos[i];
-		spin_bruteforce( &(state->orientation[3*p]), i);	
+		spin( &(state->orientation[3*p]), i);	
 	}
 }
 

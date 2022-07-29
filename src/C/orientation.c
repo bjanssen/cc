@@ -250,7 +250,7 @@ void spin(int8_t ports[], int8_t position) {
 
 	int r = rand()%3;
 #if DEBUG > 4
-	if( is_on_top(position) ^ !is_on_left(position) ) {
+	if( is_on_top(position) ^ is_on_front(position) ) {
 		// Rx
 		RotateRx(dice,1);
 		printf("%d:%d%d%d  Rx %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
@@ -264,7 +264,7 @@ void spin(int8_t ports[], int8_t position) {
 #endif
 
 #if DEBUG > 4
-	if( !is_on_top(position) ) {
+	if( !is_on_left(position) ) {
 		// Ry
 		RotateRy(dice,1);
 		printf("%d:%d%d%d  Ry %d\n",position, is_on_top(position), is_on_front(position), is_on_left(position), check_dice(dice, position));
@@ -283,7 +283,7 @@ void spin(int8_t ports[], int8_t position) {
 		// Probably some bug in the ordering
 		// FB and LR are swapped
 		// So hacky way of doing correct rotation
-		if( is_on_top(position) ^ !is_on_left(position) ) {
+		if( is_on_top(position) ^ is_on_front(position) ) {
 			// Rx
 			RotateRx(dice,1);
 		} else {
@@ -293,7 +293,7 @@ void spin(int8_t ports[], int8_t position) {
 
 	} else if (r == 1) {
 		// Ry
-		if( !is_on_top(position) ) {
+		if( !is_on_left(position) ) {
 			// Ry
 			RotateRy(dice,1);
 		} else {
@@ -307,7 +307,8 @@ void spin(int8_t ports[], int8_t position) {
 	r = rand()%4;
 	RotateRz(dice, r);
 #if DEBUG > 0
-	check_dice(dice, position);
+	if( !check_dice(dice, position) )
+		printf("ERROR: Port on position %d should not contain a 6\n", position);
 #endif
 
 	dice_to_port_numbers(dice, ports);
