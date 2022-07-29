@@ -87,31 +87,22 @@ void RotateRz(int8_t dice[], int8_t n) {
 		inplace_dot(dice,Rz);
 }
 
+// Mirror in the plane orthogonal to the 2-5 axis
 void Mirrorx(int8_t dice[]) {
-	int8_t Mx[9] = {
-	-1,0,0,
-	0,1,0,
-	0,0,1
-	};
-	inplace_dot(dice,Mx);
+	for(int8_t i=0; i<3; i++)
+		dice[3*i+1] *= -1;
 }
 
+// Mirror in the plane orthogonal to the 3-4 axis
 void Mirrory(int8_t dice[]) {
-	int8_t My[9] = {
-	1,0,0,
-	0,-1,0,
-	0,0,1
-	};
-	inplace_dot(dice,My);
+	for(int8_t i=0; i<3; i++)
+		dice[3*i+2] *= -1;
 }
 
+// Mirror in the plane orthogonal to the 1-6 axis
 void Mirrorz(int8_t dice[]) {
-	int8_t Mz[9] = {
-	1,0,0,
-	0,1,0,
-	0,0,-1
-	};
-	inplace_dot(dice,Mz);
+	for(int8_t i=0; i<3; i++)
+		dice[3*i] *= -1;
 }
 
 void print_dice(int8_t dice[]) {
@@ -161,6 +152,7 @@ void transform_to_position(int8_t dice[], int8_t position) {
 }
 
 
+// same as above, but then in port representation
 void transform_ports(int8_t ports[], int8_t position) {
 	if( is_on_top(position) )
 		ports[0] = 7 - ports[0];
@@ -169,6 +161,7 @@ void transform_ports(int8_t ports[], int8_t position) {
 	if( !is_on_front(position) )
 		ports[2] = 7 - ports[2];
 }
+
 
 bool check_dice(int8_t dice[], int8_t position) {
 	int8_t ports[3];
@@ -366,6 +359,26 @@ int main(void) {
 	print_ports(ports);
 	print_dice(canonicaldice);
 	Mirrorz(canonicaldice);
+	print_dice(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+
+	printf("\n\nMy\n");
+	Mirrory(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	Mirrory(canonicaldice);
+	print_dice(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+
+	printf("\n\nMx\n");
+	Mirrorx(canonicaldice);
+	dice_to_port_numbers(canonicaldice, ports);
+	print_ports(ports);
+	print_dice(canonicaldice);
+	Mirrorx(canonicaldice);
 	print_dice(canonicaldice);
 	dice_to_port_numbers(canonicaldice, ports);
 	print_ports(ports);

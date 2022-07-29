@@ -26,6 +26,16 @@ int main() {
 			1,4,2,
 			1,4,2}
 	};
+	Cube altmaster = {.pos = {0,5,4,1,2,7,6,3},
+			.orientation = {6,4,5,
+				4,6,2,
+				2,1,4,
+				2,6,3,
+				4,5,6,
+				3,1,2,
+				4,5,6,
+				1,2,3}
+	};
 	Cube state;
 #if DEBUG > 2
 	print_positions(master.pos);
@@ -60,15 +70,14 @@ int main() {
 	printf("--State based new example string---\n");
 	print_reordered_state(state);
 	printf("-----\n");
-	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, state.pos) + '0');
-	printf("Number of correct orientations: %c\n", n_correct_orientations(master, state) + '0');
+	printf("Number of correct positions: %c\n", n_correct_positions(altmaster.pos, state.pos) + '0');
+	printf("Number of correct orientations: %c\n", n_correct_orientations(altmaster, state) + '0');
 	printf("Manual reference\n");
   printf("AFEBCHGDFB\n 63442142UD\n 41561256FB\n 52624363LR\n 10111000\n");
 
-#if DEBUG > 2
 	Cube random_state = generate_random_cube();
 	printf("\n--Random state---\n");
-	print_state(random_state);
+	print_reordered_state(random_state);
 	printf("-----\n");
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
@@ -87,5 +96,4 @@ int main() {
 	printf("Number of correct positions: %c\n", n_correct_positions(master.pos, random_state.pos) + '0');
 	printf("Number of correct orientations: %c\n", n_correct_orientations(master, random_state) + '0');
 	print_state(master);
-#endif
 }

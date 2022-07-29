@@ -104,9 +104,9 @@ void code_to_state(Cube *state, int8_t code[]){
 			v[j] = A[SZ*p + idx];
 			//printf("%c %c->%c",p+'0', idx+'0',  v[j] + '0');
 		}
-		transform_ports(v, i);
+		//transform_ports(v, i);
 		port_numbers_to_dice(dice, v);
-		//transform_to_position(dice,i);
+		transform_to_position(dice,i);
 		dice_to_port_numbers(dice, &(state->orientation[3*p]));
 	}
 }
