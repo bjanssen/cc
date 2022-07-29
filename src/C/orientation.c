@@ -170,7 +170,7 @@ bool check_dice(int8_t dice[], int8_t position) {
 	bool contains_six = false;
 	for(int8_t i=0; i<3; i++)
 		contains_six |= (ports[i] == 6);
-#if DEBUG > 2
+#if DEBUG > 4
 	if( contains_six ) {
 		printf("Port on position %d should not contain a 6\n", position);
 		print_ports(ports);
@@ -208,6 +208,11 @@ void spin_bruteforce(int8_t ports[], int8_t position) {
 	}
 
 	dice_to_port_numbers(dice, ports);
+
+#if DEBUG > 0
+	if( !check_dice(dice, position) )
+		printf("ERROR: Port on position %d should not contain a 6\n", position);
+#endif
 }
 
 
